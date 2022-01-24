@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    db01:
+      jdbc-url: ${/db01/.../datasource/url}
+      username: ${/db01/.../datasource/password}
+      password: ${/db01/.../datasource/password}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    db02:
+      jdbc-url: ${/db02/.../datasource/url}
+      username: ${/db02/.../datasource/username}
+      password: ${/db02/.../datasource/password}
+      driver-class-name: org.postgresql.Driver
+
+  data:
+    mongodb:
+      uri: ${...}
+
