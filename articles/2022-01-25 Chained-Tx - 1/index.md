@@ -1,6 +1,6 @@
 ---
 title: "Chained-Tx & QDSL - 1"
-date: 2022-02-25 03:30:00
+date: 2022-01-25 03:30:00
 ---
 
 메인서버와 채권관리서버 사이의 게이트웨이 서버를 신설하였다. 
@@ -15,7 +15,9 @@ date: 2022-02-25 03:30:00
 
 ### Db01 (가칭) 및 Db02, 그리고 TxManager Config. 코드들
 
-이하는 TransactionManagerConfig.kt 이다.
+이하는 TransactionManagerConfig.kt 이다. 
+
+미리 스포를 하자면 `ChainedTransactionManager` 는 Deprecated 되었고, 이에 대한 대응도 고민해볼 것이다.
 
 ```kotlin
 @Configuration
