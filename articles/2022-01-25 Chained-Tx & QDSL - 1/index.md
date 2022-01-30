@@ -11,7 +11,7 @@ date: 2022-02-25 03:30:00
 
 이 글에서는 기본적인 설정 코드를 단순 나열한다.
 
-이후 이어지는 글에서는 Tx Chaining 이 내부적으로 어떻게 동작하는 지 테스트해가며 살핀다.
+이후 이어지는 글에서는 각 설정의 의미와 내부 동작을 쪼개어 살핀다.
 
 ### Db01 (가칭) 및 Db02, 그리고 TxManager Config. 코드들
 
@@ -116,4 +116,37 @@ spring:
 
 ### QueryDSL 설정 코드
 
+```kotlin
+@Configuration
+class QdslConfig {
+    @PersistenceContext(unitName = Db01DbProps.persistenceUnit)
+    private lateinit var db01EntityManager: EntityManager
+    
+    @PersistenceContext(unitName = Db02DbProps.persistenceUnit)
+    private lateinit var db02EntityManager: EntityManager
 
+
+    @Bean
+    fun db02JpaQueryFactory() = Db02JpaQueryFactory(Db02EntityManager)
+
+    @Bean
+    fun db01JpaQueryFactory() = Db01JpaQueryFactory(Db01EntityManager)
+}
+
+// Qualifier 가 아닌 클래스명 만으로 빈을 지정하고 싶어 따로 정의하였다.
+// JPAQueryFactory 가 미지원하는 insert 수행을 위해 em 을 별도 프로퍼티로 정의했다.
+//  - private 로 만들고, 메소드를 새로이 여는게 맞아보이나, 쓰임새를 보고 일괄 리팩토링키로 하였다.
+class Db01JpaQueryFactory(val entityManager: EntityManager) : JPAQueryFactory(entityManager)
+class Db02JpaQueryFactory(val entityManager: EntityManager) : JPAQueryFactory(entityManager)
+
+// 서비스에서 엔티티 패스를 짧게 쓰기위해 alias 를 정의했다.
+object Db02QdslAlias {
+    ...
+}
+
+object Db01QdslAlias {
+    ...
+}
+```
+
+리팩토링 여지는 남아있으나, 1차적으로 코드를 픽스하고 리뷰를 진행하였다.
